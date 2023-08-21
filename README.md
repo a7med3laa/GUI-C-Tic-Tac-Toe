@@ -9,6 +9,7 @@
 
 ### Tic-Tac-Toe screenshots
 
-![](https://raw.githubusercontent.com/a7med3laa/GUI-C-Tic-Tac-Toe/main/1.PNG)
+<img src="https://raw.githubusercontent.com/a7med3laa/GUI-C-Tic-Tac-Toe/main/1.PNG" alt="drawing" style="width:300px;"/>
 
-![](https://raw.githubusercontent.com/a7med3laa/GUI-C-Tic-Tac-Toe/main/2.PNG)
+<img src="https://raw.githubusercontent.com/a7med3laa/GUI-C-Tic-Tac-Toe/main/2.PNG" alt="drawing" style="width:300px;"/>
+
