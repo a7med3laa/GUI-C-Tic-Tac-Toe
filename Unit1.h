@@ -40,6 +40,7 @@ __published:	// IDE-managed Components
 
 private:	// User declarations
 	bool checkWhoWin ();
+ 	bool isDraw ();
 public:		// User declarations
 	__fastcall TForm1(TComponent* Owner);
 };
