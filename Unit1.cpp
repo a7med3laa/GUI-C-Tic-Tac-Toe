@@ -8,8 +8,12 @@
 #pragma package(smart_init)
 #pragma resource "*.fmx"
 TForm1 *Form1;
+// current symbol to show the player turn
 char currentPlayerSympol='X';
+// check if game is finished and someone win
 bool winnerflag=false;
+
+// counter of number of winning of player x and o
 int player_x=0,player_y=0;
 
 //---------------------------------------------------------------------------
@@ -48,30 +52,57 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 CurrentPlayerSympolLabel->Text= currentPlayerSympol;
 }
 //---------------------------------------------------------------------------
+bool  TForm1::isDraw (){
+	if(!Button1->Text.IsEmpty() &&
+	!Button2->Text.IsEmpty() &&
+	!Button3->Text.IsEmpty() &&
+	!Button4->Text.IsEmpty() &&
+	!Button5->Text.IsEmpty() &&
+	!Button6->Text.IsEmpty() &&
+	!Button7->Text.IsEmpty() &&
+	!Button8->Text.IsEmpty() &&
+	!Button9->Text.IsEmpty() )
+		return true;
+	else
+		return false;
+}
+
+//---------------------------------------------------------------------------
 void __fastcall TForm1::ButtonClick(TObject *Sender)
 {
 // type casting Sender to get which button is clicked
 TButton* clickedButton=dynamic_cast<TButton*>(Sender);
 
-bool flag=true;
+bool updateflag=true;
 
-//1. Change symbol of button who clicked
-if(!winnerflag && clickedButton->Text!='X' && clickedButton->Text!='O'){
+//1. Change symbol of button who is clicked and was empty
+if(!winnerflag && clickedButton->Text.IsEmpty()){
 clickedButton->Text=currentPlayerSympol;
-}
-else{flag=false;}
+}else{updateflag=false;}
 
-//2. check if player has won
+//2. check if player has win
 if(checkWhoWin()){
-winnerLabel->Text="You win!!";
+winnerLabel->Text="Player "+
+String(currentPlayerSympol)+" win!!";
 winnerflag=true;
 PlayAgain->Visible=true;
 Exit->Visible=true;
 return;
 }
 
-//update turn of player
-if(flag){
+//3. Check draw condition
+if(isDraw()){
+winnerLabel->Text="It's a draw!";
+winnerflag=false;
+PlayAgain->Visible=true;
+Exit->Visible=true;
+return;
+}
+
+//4. update turn of player
+// bool updateflag used to ensure if same
+// button clicked it will not update symbol
+if(updateflag){
 
 if (currentPlayerSympol=='X') {
 	currentPlayerSympol='O';
@@ -79,6 +110,7 @@ if (currentPlayerSympol=='X') {
    currentPlayerSympol='X';  }
 
 CurrentPlayerSympolLabel->Text= currentPlayerSympol;
+
 }
 
 }
@@ -91,7 +123,7 @@ void __fastcall TForm1::intializeGame(TObject *Sender)
 	 Exit->Visible=false;
 	 winnerLabel->Text="";
 
-	 winnerflag=false;
+
 	 Button1->Text="";
 	 Button2->Text="";
 	 Button3->Text="";
@@ -102,20 +134,20 @@ void __fastcall TForm1::intializeGame(TObject *Sender)
 	 Button8->Text="";
 	 Button9->Text="";
 
+
 	 String winner=CurrentPlayerSympolLabel->Text;
 
-	 if (winner=='X') {
+	 if (winnerflag && winner=='X') {
 		 player_x++;
 		 playerX->Text=String(player_x);
 		 currentPlayerSympol='X';
-	 }else{
+	 }else if (winnerflag && winner=='O'){
 		 player_y++;
 		 playerY->Text=String(player_y);
          currentPlayerSympol='O';
 	 }
      CurrentPlayerSympolLabel->Text= currentPlayerSympol;
-
-
+     winnerflag=false;
 }
 //---------------------------------------------------------------------------
 
@@ -125,4 +157,3 @@ void __fastcall TForm1::ExitForm(TObject *Sender)
 Form1->Close();
 }
 //---------------------------------------------------------------------------
-
